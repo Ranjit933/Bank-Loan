@@ -10,11 +10,13 @@ The focus of this summary is on the loan data and highlighting essential metrics
 
 ## Key Data Points:
 
-*Loan Types:
-*Personal Loans
-*Auto Loans
-*Home Mortgages
-*Business Loans
+## Loan Types:
+* Personal Loans
+* Auto Loans
+* Home Mortgages
+* Business Loans
+* Education Loans
+* House Loan 
 
 
 ## Objective of Analysis:

@@ -1,4 +1,5 @@
 ## Bank Loan Summary
+![]()
 
 ## About the Bank:
 
@@ -6,7 +7,7 @@ This financial institution is a prominent player in the banking sector, offering
 
 ## Loan Overview:
 
-The focus of this summary is on the loan data and highlighting essential metrics such as loan amounts, interest rates, repayment terms, and borrower profiles. The dataset encompasses personal loans, auto loans, home mortgages, and business loans, facilitating a detailed analysis of loan distribution and performance.
+The focus of this summary is on the loan data and highlighting essential metrics such as loan amounts, interest rates, repayment terms and borrower profiles. The dataset encompasses personal loans, auto loans, home mortgages, and business loans, facilitating a detailed analysis of loan distribution and performance.
 
 ## Key Data Points:
 

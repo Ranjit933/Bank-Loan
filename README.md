@@ -138,15 +138,262 @@ Use for Banks: Banks use interest rates to price loans, manage profit margins, a
 Purpose: Loan Amount is the total borrowed sum. It defines the principal amount.
 Use for Banks: Banks use Loan Amount to determine loan size
 
-
+## Query
 ```sql
 SELECT * FROM bank_loan_data
 ```
 
-## 1.No. of Application
+## 1.No. of Application?
 
 ```sql
 SELECT COUNT(id) AS Total_Loan_Application
 FROM bank_loan_data
+```
+
+## 3.Month To Date?
+
 ```sql
+SELECT COUNT(id) AS MTD_Loan_Applications 
+FROM bank_loan_data
+WHERE MONTH(issue_date) = 12 AND YEAR(issue_date) = 2021
+```
+## 4.Previous Month of Month (MTD-PMTD)/PMTD?
+
+```sql
+SELECT COUNT(id) AS PMTD_Loan_Applications 
+FROM bank_loan_data
+WHERE MONTH(issue_date) = 11 AND YEAR(issue_date) = 2021
+```
+## 5.Total for Funded Amount?
+
+ ```sql
+ SELECT SUM(loan_amount) AS Total_Funded_Amount
+ FROM bank_loan_data
+```
+ ## 5.Month To Date?
+```sql
+ SELECT SUM(loan_amount) AS Total_Funded_amount
+ FROM bank_loan_data
+ WHERE MONTH (issue_date) = 12 AND YEAR(issue_date) = 2021
+```
+ ## 6.Previous Month To Date?
+```sql
+ SELECT SUM(loan_amount) AS PMTD_Total_Funded_amount 
+ FROM bank_loan_data
+ WHERE MONTH(issue_date) = 11 AND YEAR(issue_date) = 2021
+```
+
+## 7.Total Recived Amount?
+```sql
+ SELECT SUM(total_payment)
+ FROM bank_loan_data AS Total_Amount_Recived
+```
+ ## 8.Total Recived Amount As Current Month?
+```sql
+SELECT SUM(total_payment) AS MTD_Total_Amount_Recived 
+From bank_loan_data
+WHERE MONTH(issue_date) = 12 AND YEAR(issue_date) = 2021
+```
+## 9.Previous Month Total Recived Amount As ?
+```sql
+SELECT SUM(total_payment) AS MTD_Total_Amount_Recived 
+From bank_loan_data
+WHERE MONTH(issue_date) = 11 AND YEAR(issue_date) = 2021
+```
+## 10.Average Interest Rate?
+```sql
+SELECT ROUND(AVG(int_rate), 4) * 100 AS Avg_interest_Rate
+FROM bank_loan_data
+```
+## 11.For Current Month Int Rate?
+```sql
+SELECT ROUND(AVG(int_rate), 4) * 100 AS Current_Month_Int_Rate
+FROM bank_loan_data
+WHERE MONTH(issue_date) = 12  AND YEAR(issue_date) = 2021
+```
+## 12.For The Previous Month?
+```sql
+SELECT ROUND(AVG(int_rate), 4) * 100 AS PMIR
+FROM bank_loan_data
+WHERE MONTH(issue_date) = 11 AND YEAR(issue_date) = 2021
+```
+```sql
+SELECT ROUND(AVG(dti), 4) * 100 AS Avg_DTI
+FROM bank_loan_data
+```
+## 13.Month To Date Avg Rate?
+```sql
+SELECT ROUND(AVG(dti), 4) * 100 AS MTD_AVG_DTI
+FROM bank_loan_data
+WHERE MONTH(issue_date) = 12 AND YEAR(issue_date) = 2021
+```
+## 14.Previous Month To Date Avg Rate?
+```sql
+SELECT ROUND(AVG(dti), 4) * 100 AS MTD_AVG_DTI
+FROM bank_loan_data
+WHERE MONTH(issue_date) = 11 AND YEAR(issue_date) = 2021
+```
+## 15.Good Loan percentage?
+```sql
+SELECT
+(COUNT(CASE WHEN loan_status = 'Fully paid' OR loan_status = ' Current' THEN id END) * 100)
+/
+COUNT(id) AS Good_Loan_Percentage
+FROM bank_loan_data
+```
+## 16.Good Loan Applicartion?
+```sql
+SELECT COUNT(id) AS Good_Loan_Application
+FROM bank_loan_data 
+WHERE loan_status = 'Fully Paid' OR loan_status = 'Current'
+```
+## 17.Good Loan Funded Amount?
+```sql
+SELECT SUM(loan_amount) AS Good_Loan_funded_Amount
+FROM bank_loan_data
+WHERE loan_status = 'Fully paid' Or loan_status = ' Current'
+```
+## 18.Good Loan Total Payment Recived Amount?
+```sql
+SELECT SUM(total_payment) AS Good_Loan_Recieved_Amount
+FROM bank_loan_data
+WHERE loan_status = 'Fully paid' OR loan_status = 'Current'
+```
+## 18.Bad loans?
+```sql
+SELECT 
+(COUNT(CASE WHEN loan_status = 'Charged off' THEN id END) * 100.0)
+/
+COUNT(id) AS Bad_Loan_percentage
+FROM bank_loan_data
+```
+-- Bank Bad Loans application
+
+SELECT COUNT(id) AS Bad_Loan_Applications
+FROM bank_loan_data
+WHERE  loan_status = 'Charged Off'
+
+## 19.Bad loan Funded Amount?
+```sql
+SELECT SUM(loan_amount) AS Bad_Loan_Funded_Amount
+FROM bank_loan_data
+WHERE loan_status = 'Charged Off'
+```
+## 20.Bad loan Funded Amount Recived?
+```sql
+SELECT SUM(total_payment) AS Bad_Loan_Funded_Amount_Recived
+FROM bank_loan_data
+WHERE loan_status = 'Charged Off'
+```
+## 20.Loan Status?
+```sql
+SELECT
+   loan_status,
+   COUNT(id) AS Total_Loan_applications,
+   SUM(total_payment) AS Total_Amount_Received,
+   SUM(loan_amount) AS Total_Funded_Amount,
+   AVG(int_rate * 100) AS Interest_Rate,
+   AVG(dti * 100) AS DTI
+   FROM
+      bank_loan_data
+   GROUP BY
+      loan_status
+```
+## 21.Current Month To Date?
+```sql
+SELECT
+   loan_status,
+   SUM(total_payment) AS MTD_Total_Amount_Received,
+   SUM(loan_amount) AS MTD_Total_Funded_Amount
+ FROM bank_loan_data
+ WHERE MONTH(issue_date) = 12
+   GROUP BY
+      loan_status
+```
+## 22.Bank Loan Application OverView?
+```sql
+SELECT
+    MONTH(issue_date) AS Month_Number,
+	DATENAME(MONTH, issue_date) AS Month_Name,
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Received_Amount
+FROM bank_loan_data
+GROUP BY MONTH(issue_date), DATENAME(MONTH, issue_date)
+ORDER BY MONTH(issue_date)
+```
+## 23.Bank Loan Application Address State?
+```sql
+SELECT
+    address_state,
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Received_Amount
+FROM bank_loan_data
+GROUP BY  address_state
+ORDER BY  COUNT(id) DESC
+```
+## 24.On The Basis of Term?
+```sql
+SELECT
+    term,
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Received_Amount
+FROM bank_loan_data
+GROUP BY  term
+ORDER BY  term
+```
+## 25.On The Basis of Emp Name?
+
+SELECT
+    emp_length,
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Received_Amount
+FROM bank_loan_data
+GROUP BY  emp_length
+ORDER BY  emp_length
+
+## 26.On The Basis of Purpose?
+```sql
+SELECT
+    purpose,
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Received_Amount
+FROM bank_loan_data
+GROUP BY  purpose
+ORDER BY  COUNT(id) DESC
+```
+
+## 27.On The Basis of Home Ownership?
+```sql
+SELECT
+    home_ownership,
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Received_Amount
+FROM bank_loan_data
+GROUP BY  home_ownership
+ORDER BY  COUNT(id) DESC
+```
+
+
+## 28.On The Basis of Grade View?
+```sql
+SELECT
+    home_ownership,
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Received_Amount
+FROM bank_loan_data
+WHERE grade = 'A'
+GROUP BY  home_ownership
+ORDER BY  COUNT(id) DESC
+```
+
+
+
+
 

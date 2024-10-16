@@ -141,5 +141,5 @@ Use for Banks: Banks use Loan Amount to determine loan size
 
 ```sql
 USE [BankLoan DB]
-``sql
+```sql
 

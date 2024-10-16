@@ -140,6 +140,13 @@ Use for Banks: Banks use Loan Amount to determine loan size
 
 
 ```sql
-USE [BankLoan DB]
+SELECT * FROM bank_loan_data
+``sql
+
+## 1.No. of Application
+
+```sql
+SELECT COUNT(id) AS Total_Loan_Application
+FROM bank_loan_data
 ```sql
 

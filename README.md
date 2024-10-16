@@ -141,7 +141,7 @@ Use for Banks: Banks use Loan Amount to determine loan size
 
 ```sql
 SELECT * FROM bank_loan_data
-``sql
+
 
 ## 1.No. of Application
 
